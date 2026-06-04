@@ -181,17 +181,72 @@ footer { text-align: center; padding: 30px; color: var(--text-muted); font-size:
 @keyframes petFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 .btn-action-sm { margin-top: 10px; background: rgba(6, 182, 212, 0.2); border: 1px solid var(--accent-blue); color: var(--text-light); padding: 4px 10px; font-size: 0.75rem; border-radius: 6px; cursor: pointer; }
 
-/* 當螢幕小於 768px 時的手機版樣式 */
+/* ================= 📱 響應式手機版優化 (RWD) ================= */
 @media (max-width: 768px) {
+    /* 1. 讓主容器寬度彈性化，不再鎖死在電腦版的 1200px */
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 15px !important;
+        box-sizing: border-box;
+    }
+
+    /* 2. 導覽列改成直向上下排列，防止 5 個按鈕往右邊爆出去 */
     .navbar {
-        flex-direction: column; /* 讓導覽列變直向排列 */
-        gap: 10px;
+        flex-direction: column !important;
+        align-items: center !important;
+        padding: 15px 10px !important;
+        height: auto !important;
+        gap: 12px !important;
     }
+
+    /* 讓按鈕區塊可以自動折行 */
     .nav-links {
-        flex-wrap: wrap; /* 讓按鈕可以自動折行 */
-        justify-content: center;
+        flex-wrap: wrap !important; 
+        justify-content: center !important;
+        width: 100% !important;
+        gap: 8px !important;
     }
+
+    /* 稍微縮小手機版導覽按鈕的大小 */
+    .nav-btn {
+        padding: 6px 12px !important;
+        font-size: 13px !important;
+    }
+
+    /* 3. 電腦版的「雙欄佈局」在手機上強制變成「單欄一條龍」上下排列 */
     .grid-2 {
-        grid-template-columns: 1fr; /* 雙欄版面變成單欄一條龍 */
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+
+    /* 4. 縮小手機版的標題字型，避免字太大導致換行很醜 */
+    h1, .main-content h2 {
+        font-size: 1.8rem !important;
+        text-align: center !important;
+    }
+    
+    h3 {
+        font-size: 1.2rem !important;
+    }
+
+    /* 5. 確保所有卡片在手機寬度下都是 100% 滿版 */
+    .card {
+        padding: 15px !important;
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+
+    /* 6. 圖表容器寬度自適應 */
+    .chart-container {
+        height: 220px !important; /* 手機版稍微調矮一點更精緻 */
+    }
+
+    /* 7. 右下角跟隨的小海龜稍微縮小，避免擋到按鈕 */
+    .pet-container {
+        transform: scale(0.85);
+        right: 15px !important;
+        bottom: 15px !important;
     }
 }
