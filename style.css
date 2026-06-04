@@ -192,8 +192,8 @@ footer { text-align: center; padding: 30px; color: var(--text-muted); font-size:
     }
     /* 🐢 讓小海龜整體縮小為 75% 並靠右下角對齊 */
     .turtle-assistant, .turtle-avatar, [class*="turtle"] {
-        transform: scale(0.75);
-        transform-origin: bottom right; /* 確保縮放時緊貼右下角 */
+        transform: scale(0.75) !important;
+        transform-origin: bottom right !important; /* 確保縮放時緊貼右下角 */
     }
 
     /* 💬 如果想讓對話框也一起變小、字體變緊湊，可以加上這段 */
