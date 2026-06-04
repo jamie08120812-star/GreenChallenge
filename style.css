@@ -182,7 +182,7 @@ footer { text-align: center; padding: 30px; color: var(--text-muted); font-size:
 .btn-action-sm { margin-top: 10px; background: rgba(6, 182, 212, 0.2); border: 1px solid var(--accent-blue); color: var(--text-light); padding: 4px 10px; font-size: 0.75rem; border-radius: 6px; cursor: pointer; }
 
 /* ================= 📱 響應式手機版優化 (RWD) ================= */
-@media (max-width: 768px) {
+@media (max-width: 384px) {
     /* 1. 讓主容器寬度彈性化，不再鎖死在電腦版的 1200px */
     .container {
         width: 100% !important;
