@@ -190,6 +190,17 @@ footer { text-align: center; padding: 30px; color: var(--text-muted); font-size:
         padding: 15px !important;
         box-sizing: border-box;
     }
+    /* 🐢 讓小海龜整體縮小為 75% 並靠右下角對齊 */
+    .turtle-assistant, .turtle-avatar, [class*="turtle"] {
+        transform: scale(0.75);
+        transform-origin: bottom right; /* 確保縮放時緊貼右下角 */
+    }
+
+    /* 💬 如果想讓對話框也一起變小、字體變緊湊，可以加上這段 */
+    .turtle-dialog, [class*="bubble"], [class*="dialog"] {
+        font-size: 0.85rem !important;
+        padding: 8px 12px !important;
+    }
 
     /* 2. 導覽列改成直向上下排列，防止 5 個按鈕往右邊爆出去 */
     .navbar {
