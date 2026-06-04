@@ -180,3 +180,18 @@ footer { text-align: center; padding: 30px; color: var(--text-muted); font-size:
 @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 10px rgba(6, 182, 212, 0.2); } 50% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.5); } }
 @keyframes petFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 .btn-action-sm { margin-top: 10px; background: rgba(6, 182, 212, 0.2); border: 1px solid var(--accent-blue); color: var(--text-light); padding: 4px 10px; font-size: 0.75rem; border-radius: 6px; cursor: pointer; }
+
+/* 當螢幕小於 768px 時的手機版樣式 */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column; /* 讓導覽列變直向排列 */
+        gap: 10px;
+    }
+    .nav-links {
+        flex-wrap: wrap; /* 讓按鈕可以自動折行 */
+        justify-content: center;
+    }
+    .grid-2 {
+        grid-template-columns: 1fr; /* 雙欄版面變成單欄一條龍 */
+    }
+}
