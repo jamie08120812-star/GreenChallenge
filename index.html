@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenChallenge - 永續低碳生活大挑戰</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body class="dark-theme"> <canvas id="particle-canvas"></canvas>
+
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-leaf text-gradient"></i> GreenChallenge
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn active" onclick="switchPage('home')"><i class="fa-solid fa-house"></i> 首頁基地</button>
+            <button class="nav-btn" onclick="switchPage('tasks')"><i class="fa-solid fa-list-check"></i> 每日任務</button>
+            <button class="nav-btn" onclick="switchPage('calculator')"><i class="fa-solid fa-calculator"></i> 碳足跡計算</button>
+            <button class="nav-btn" onclick="switchPage('badges-wall')"><i class="fa-solid fa-award"></i> 成就榮譽牆</button>
+            <button class="nav-btn" onclick="switchPage('dashboard')"><i class="fa-solid fa-chart-pie"></i> 數據儀表板</button>
+            
+            <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn">
+                <i class="fa-solid fa-sun"></i> <span id="theme-text">白天模式</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="container">
+        
+        <section id="home" class="page active">
+            <div class="welcome-box">
+                <h1>歡迎來到 <span class="text-gradient">GreenChallenge</span></h1>
+                <p>將氣候行動轉化為好玩的網頁遊戲，讓我們一起為 SDG 13 做出貢獻！</p>
+            </div>
+            
+            <div class="grid-2">
+                <div class="card tree-grow-card">
+                    <h3><i class="fa-solid fa-seedling"></i> 你的虛擬綠色基地</h3>
+                    <div class="tree-stage-container">
+                        <div id="tree-evolution" class="tree-icon"><i class="fa-solid fa-seedling"></i></div>
+                        <p id="tree-status-text">當前狀態：發芽種子</p>
+                    </div>
+                    <div class="progress-wrapper">
+                        <div class="progress-info">
+                            <span>綠色總積分: <span id="total-score">0</span> 分</span>
+                            <span id="level-text">LV.1 減碳新手</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div id="main-progress" class="progress-bar-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="home-right-column">
+                    <div class="card" style="margin-bottom: 20px;">
+                        <h3><i class="fa-solid fa-circle-check"></i> 今日核心榮譽</h3>
+                        <div class="home-badges-flex">
+                            <div class="badge unlocked showcase-badge" id="badge-rank">
+                                <i id="badge-rank-icon" class="fa-solid fa-star-halved"></i>
+                                <span id="badge-rank-title">初試身手</span>
+                                <small id="badge-rank-desc" class="badge-desc">當前最新等級頭銜</small>
+                            </div>
+                            <div class="badge locked showcase-badge" id="badge-streak">
+                                <i class="fa-solid fa-fire"></i>
+                                <span>持之以恆</span>
+                                <small class="badge-desc">今日完成所有隨機任務</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card info-card">
+                        <h3><i class="fa-solid fa-earth-americas text-gradient"></i> 每日環保小知識</h3>
+                        <div class="info-card-content">
+                            <p id="info-text">載入中...</p>
+                        </div>
+                        <button class="btn-refresh-sm" onclick="refreshInfoCard()"><i class="fa-solid fa-arrows-rotate"></i> 換一張</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tasks" class="page">
+            <div class="page-header">
+                <h2><i class="fa-solid fa-calendar-day text-gradient"></i> 每日環保挑戰</h2>
+                <p>每日登入將隨機獲取三項環保任務，完成即可獲得積分與減少碳排放！</p>
+                <button class="btn-refresh" onclick="refreshTasks()"><i class="fa-solid fa-rotate"></i> 刷新今日任務</button>
+            </div>
+            <div id="tasks-list" class="tasks-container"></div>
+        </section>
+
+        <section id="calculator" class="page">
+            <div class="page-header">
+                <h2><i class="fa-solid fa-calculator text-gradient"></i> 碳足跡隨手算</h2>
+                <p>輸入你今天的交通與飲食習慣，快速算算你製造了多少碳排放吧！</p>
+            </div>
+            <div class="card calc-card">
+                <div class="input-group">
+                    <label><i class="fa-solid fa-bus"></i> 今日交通方式</label>
+                    <select id="calc-transport">
+                        <option value="0.05">搭乘捷運/火車 (低碳)</option>
+                        <option value="0.08">搭乘公車 (中低碳)</option>
+                        <option value="0.16">獨自騎機車 (中碳)</option>
+                        <option value="0.25">獨自開汽車 (高碳)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label><i class="fa-solid fa-road"></i> 移動里程數 (公里)</label>
+                    <input type="number" id="calc-distance" min="0" value="5">
+                </div>
+                <div class="input-group">
+                    <label><i class="fa-solid fa-utensils"></i> 今日飲食類型</label>
+                    <select id="calc-diet">
+                        <option value="1.2">全素食 (極低碳)</option>
+                        <option value="2.5">多吃蔬果少吃肉 (低碳)</option>
+                        <option value="5.2">正常葷食 (中碳)</option>
+                        <option value="8.5">肉食愛好者 (高碳)</option>
+                    </select>
+                </div>
+                <button class="btn-primary" onclick="calculateCarbon()">開始分析足跡</button>
+                <div id="calc-result" class="calc-result-box hidden">
+                    <h4>分析結果</h4>
+                    <p>你今日的預估碳排放量為：<strong id="result-co2">0</strong> kg CO₂e</p>
+                    <p id="result-advice"></p>
+                    <button class="btn-secondary" id="btn-save-record" onclick="saveCalcRecord()" style="margin-top: 10px;">將此紀錄同步至儀表板</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="badges-wall" class="page">
+            <div class="page-header">
+                <h2><i class="fa-solid fa-trophy text-gradient"></i> 個人成就博物館</h2>
+                <p>這裡記錄了你所有的綠能歷史軌跡，走過的每一步都不會被忘記。</p>
+            </div>
+            <div class="card">
+                <h3 class="wall-title-header"><i class="fa-solid fa-timeline"></i> 綠能歷史頭銜路徑</h3>
+                <div class="wall-grid" id="history-ranks-wall">
+                    <div class="badge locked" id="wall-rank-0"><i class="fa-solid fa-star-halved"></i><span>初試身手</span><small>0 分解鎖</small></div>
+                    <div class="badge locked" id="wall-rank-1"><i class="fa-solid fa-wand-magic-sparkles"></i><span>鋒芒初露</span><small>50 分解鎖</small></div>
+                    <div class="badge locked" id="wall-rank-2"><i class="fa-solid fa-shield-halved"></i><span>綠能勇士</span><small>120 分解鎖</small></div>
+                    <div class="badge locked" id="wall-rank-3"><i class="fa-solid fa-mask"></i><span>生態衛士</span><small>200 分解鎖</small></div>
+                    <div class="badge locked" id="wall-rank-4"><i class="fa-solid fa-rocket"></i><span>永續先鋒</span><small>320 分解鎖</small></div>
+                    <div class="badge locked" id="wall-rank-5"><i class="fa-solid fa-earth-asia"></i><span>地球英雄</span><small>450 分解鎖</small></div>
+                    <div class="badge locked" id="wall-rank-6"><i class="fa-solid fa-dragon"></i><span>傳奇守護</span><small>600 分解鎖</small></div>
+                </div>
+            </div>
+            <div class="card" style="margin-top: 30px;">
+                <h3 class="wall-title-header"><i class="fa-solid fa-shuttle-space"></i> 傳奇特殊里程碑</h3>
+                <div class="wall-grid">
+                    <div class="badge locked" id="wall-badge-beach">
+                        <i class="fa-solid fa-umbrella-beach"></i>
+                        <span>淨灘達人</span>
+                        <small id="beach-desc">淨灘次數: 0 / 20</small>
+                        <button class="btn-action-sm" onclick="incrementBeach()">進行淨灘 +1</button>
+                    </div>
+                    <div class="badge locked" id="wall-badge-flash">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span>減碳閃電俠</span>
+                        <small>單日減碳大於 5 kg</small>
+                    </div>
+                    <div class="badge locked" id="wall-badge-million">
+                        <i class="fa-solid fa-gem"></i>
+                        <span>百萬綠能大師</span>
+                        <small>總積分突破 400 分</small>
+                    </div>
+                    <div class="badge locked" id="wall-badge-zero">
+                        <i class="fa-solid fa-leaf"></i>
+                        <span>零碳實踐家</span>
+                        <small>累計完成 10 次隨機任務</small>
+                    </div>
+                    <div class="badge locked" id="wall-badge-dietmaster">
+                        <i class="fa-solid fa-carrot"></i>
+                        <span>絕食抗碳大師</span>
+                        <small>飲食環保積分達到 40 分</small>
+                    </div>
+                    <div class="badge locked" id="wall-badge-transmaster" >
+                        <i class="fa-solid fa-bicycle"></i>
+                        <span>雙腳萬歲萬萬歲</span>
+                        <small>綠色交通積分達到 40 分</small>
+                    </div>
+
+                    <div class="badge locked" id="wall-badge-energymaster">
+                        <i class="fa-solid fa-plug-circle-xmark"></i>
+                        <span>拔插頭狂魔</span>
+                        <small>節能省電積分達到 40 分</small>
+                    </div>
+
+                    <div class="badge locked" id="wall-badge-perfectall">
+                        <i class="fa-solid fa-gavel text-yellow"></i>
+                        <span>全能永續戰士</span>
+                        <small>所有環保雷達指標皆達 20 分</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard" class="page">
+            <div class="page-header">
+                <h2><i class="fa-solid fa-chart-line text-gradient"></i> 數據視覺化儀表板</h2>
+                <p>將無形的減碳行為轉化為具體的成就數字，全面追蹤你的環保軌跡。</p>
+            </div>
+            <div class="grid-2">
+                <div class="card">
+                    <h3><i class="fa-solid fa-chart-bar"></i> 每週歷史累計減碳量 (kg)</h3>
+                    <div class="chart-container">
+                        <canvas id="weeklyChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3><i class="fa-solid fa-chart-radar"></i> 減碳面向雷達圖</h3>
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="card" style="margin-top: 30px;">
+                <h3><i class="fa-solid fa-history"></i> 本地歷史減碳日誌</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr><th>日期</th><th>動作/事件</th><th>獲得綠色積分</th><th>實質減碳貢獻</th></tr>
+                        </thead>
+                        <tbody id="history-table-body"></tbody>
+                    </table>
+                </div>
+                <button class="btn-danger" onclick="clearAllData()"><i class="fa-solid fa-trash-can"></i> 清除所有歷史數據</button>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="pet-container" id="eco-pet" onclick="petSpeak()">
+        <div class="pet-dialog" id="pet-bubble">今天記得帶環保杯喔！</div>
+        <div class="pet-avatar">🐢</div>
+    </div>
+
+    <footer>
+        <p>© 2026 GreenChallenge 專案小組. All Rights Reserved. <br>組長: 黃盈箏 | 組員: 陳巧芳</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
